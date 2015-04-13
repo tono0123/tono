@@ -1,39 +1,39 @@
 <?php
 //------------------------------------------------------------------------------
 //
-//	GMOƒvƒƒgƒRƒ‹ŒˆÏiŠîŠ²j
+//	GMOãƒ—ãƒ­ãƒˆã‚³ãƒ«æ±ºæ¸ˆï¼ˆåŸºå¹¹ï¼‰
 //			auther		date		ver		memo
-//			s.madono	20131005	1.0		V‹Kì¬
+//			s.madono	20131005	1.0		æ–°è¦ä½œæˆ
 //------------------------------------------------------------------------------
 
 class pcGmoKikan extends gcGmo{
 	function pcGmoKikan($db = false){
-		//DBÚ‘±
+		//DBæ¥ç¶š
 		if($db){
 			$this->poGDB = $db;
 		}else{
 			$this->poGDB = new gcConnectDB();
 		}
-		//ƒGƒ‰[ƒƒbƒZ[ƒW
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 		$this->sErrMes = "";
 	}
 	
 	//-------------------------------------------------
 	//
-	// ”„ãZoE”„ãŒvã î•ñæ“¾ƒe[ƒuƒ‹
+	// å£²ä¸Šç®—å‡ºãƒ»å£²ä¸Šè¨ˆä¸Š æƒ…å ±å–å¾—ãƒ†ãƒ¼ãƒ–ãƒ«
 	//
-	// $phPost :ƒ|ƒXƒg’l
+	// $phPost :ãƒã‚¹ãƒˆå€¤
 	//
 	//-------------------------------------------------
 	function fGetGmoSalesList($phPost){
 		
 		$aSql=array();
 		$aSql[]="SELECT";
-		//”„ãZo
+		//å£²ä¸Šç®—å‡º
 		if($phPost['psTranKbn'] == "CALCULATION"){
 			$aSql[]=	"sum(a.amount) as amount";
 			$aSql[]=	",count(a.bill_id)";
-		//”„ãŒvã
+		//å£²ä¸Šè¨ˆä¸Š
 		}elseif($phPost['psTranKbn'] == "CAPTURE"){
 			$aSql[]=	"a.bill_id";
 			$aSql[]=	",a.bill_branch";
@@ -120,14 +120,14 @@ class pcGmoKikan extends gcGmo{
 		$sSql = "";
 		$sSql = implode(" ",$aSql);
 
-		//SQLÀs
+		//SQLå®Ÿè¡Œ
 		$pbRet=$this->poGDB->fExecSql($sSql);
 		if(!$pbRet){
-			$this->sErrMes = "fGetGmoSalesList ƒNƒGƒŠƒGƒ‰[".implode("<br/>",$aSql);
+			$this->sErrMes = "fGetGmoSalesList ã‚¯ã‚¨ãƒªã‚¨ãƒ©ãƒ¼".implode("<br/>",$aSql);
 			$this->poGDB->fErrProcess($this->sErrMes);
 			return false;
 		}
-		//æ“¾‚µ‚½ƒŒƒR[ƒh‚ğŠi”[‚·‚é
+		//å–å¾—ã—ãŸãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’æ ¼ç´ã™ã‚‹
 		$hSales = $this->poGDB->fFetch();
 		
 		return $hSales;
@@ -135,7 +135,7 @@ class pcGmoKikan extends gcGmo{
 
 	//-------------------------------------------------
 	//
-	// ƒLƒƒƒŠƒAŒˆÏæˆøURL”»•Ê
+	// ã‚­ãƒ£ãƒªã‚¢æ±ºæ¸ˆå–å¼•URLåˆ¤åˆ¥
 	//
 	// $hParamList
 	//
@@ -143,7 +143,7 @@ class pcGmoKikan extends gcGmo{
 	function fGetGmoEcMobilePayurl($hParamList){
 		
 		switch($hParamList['idpass']){
-			//æˆø“o˜^
+			//å–å¼•ç™»éŒ²
 			case "entrytran":
 				if($hParamList['mobile_company'] == "softbank"){
 					return GS_GMOPAY_ENTRYTRAINSB;
@@ -153,7 +153,7 @@ class pcGmoKikan extends gcGmo{
 					return GS_GMOPAY_ENTRYTRAINDOCOMO;
 				}
 				break;
-			//ŒˆÏÀs
+			//æ±ºæ¸ˆå®Ÿè¡Œ
 			case "exectran":
 				if($hParamList['mobile_company'] == "softbank"){
 					return GS_GMOPAY_EXECTRAINSB;
@@ -163,7 +163,7 @@ class pcGmoKikan extends gcGmo{
 					return GS_GMOPAY_EXECTRAINDOCOMO;
 				}
 				break;
-			//x•¥è‘±‚«ŠJnIF‚ÌŒÄ‚Ño‚µ
+			//æ”¯æ‰•æ‰‹ç¶šãé–‹å§‹IFã®å‘¼ã³å‡ºã—
 			case "start":
 				if($hParamList['mobile_company'] == "softbank"){
 					return GS_GMOPAY_SBSTART;
@@ -173,7 +173,7 @@ class pcGmoKikan extends gcGmo{
 					return GS_GMOPAY_DOCOMOSTART;
 				}
 				break;
-			//À”„ã
+			//å®Ÿå£²ä¸Š
 			case "sales":
 				if($hParamList['mobile_company'] == "softbank"){
 					return GS_GMOPAY_SBSALES;
@@ -183,7 +183,7 @@ class pcGmoKikan extends gcGmo{
 					return GS_GMOPAY_DOCOMOSALES;
 				}
 				break;
-			//ƒLƒƒƒ“ƒZƒ‹
+			//ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			case "cancel":
 				if($hParamList['mobile_company'] == "softbank"){
 					return GS_GMOPAY_SBCANCEL;
@@ -198,35 +198,35 @@ class pcGmoKikan extends gcGmo{
 	
 	//-------------------------------------------------
 	//
-	// ”„ãŒvãˆ—
+	// å£²ä¸Šè¨ˆä¸Šå‡¦ç†
 	//
-	// bill_id‚ğˆê‚Â‚¸‚Â“n‚µ‚Äˆ—
-	// $hParamList :ƒ|ƒXƒgA“o˜^‚É•K—v‚È”z—ñ
+	// bill_idã‚’ä¸€ã¤ãšã¤æ¸¡ã—ã¦å‡¦ç†
+	// $hParamList :ãƒã‚¹ãƒˆã€ç™»éŒ²ã«å¿…è¦ãªé…åˆ—
 	//
 	//-------------------------------------------------
 	function fUpdateGmoSalesList($hParamList){
 		
-		//ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“ƒXƒ^[ƒg
+		//ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚¹ã‚¿ãƒ¼ãƒˆ
 		$this->poGDB-> fBegin();
 		
-		//GMO‚ÖPOST
+		//GMOã¸POST
 		$sAfterTrain = $this->fSendGmoPostData($hParamList);
 		if(!$sAfterTrain){
-			$this->sErrMes = "fUpdateGmoSalesList ŒˆÏÀs¸”sB •Ô‚è’l:".$sAfterTrain." bill_id:".$hParamList['bill_id'];
+			$this->sErrMes = "fUpdateGmoSalesList æ±ºæ¸ˆå®Ÿè¡Œå¤±æ•—ã€‚ è¿”ã‚Šå€¤:".$sAfterTrain." bill_id:".$hParamList['bill_id'];
 			$this->poGDB->fErrProcess($this->sErrMes);
 			return false;
 		}else{			
-			//ƒe[ƒuƒ‹‚É“o˜^
+			//ãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²
 			$pbRet = $this->fInsertGmoSlnKessai($hParamList,$sAfterTrain);
 			if(!$pbRet){
-				$this->sErrMes = "fUpdateGmoSalesList “o˜^¸”sB bill_id:".$hParamList['bill_id'];
+				$this->sErrMes = "fUpdateGmoSalesList ç™»éŒ²å¤±æ•—ã€‚ bill_id:".$hParamList['bill_id'];
 				$this->poGDB->fErrProcess($this->sErrMes);
-				//ƒ[ƒ‹ƒoƒbƒN
+				//ãƒ­ãƒ¼ãƒ«ãƒãƒƒã‚¯
 				$this->poGDB->fRollBack();
 				return false;
 			}else{
-				pfCreditLog("”„ãŒvãƒe[ƒuƒ‹“o˜^Š®—¹ bill_id:".$hParamList['bill_id']);
-				//ƒRƒ~ƒbƒg
+				pfCreditLog("å£²ä¸Šè¨ˆä¸Šãƒ†ãƒ¼ãƒ–ãƒ«ç™»éŒ²å®Œäº† bill_id:".$hParamList['bill_id']);
+				//ã‚³ãƒŸãƒƒãƒˆ
 				$this->poGDB-> fCommit();
 			}
 		}
@@ -239,51 +239,51 @@ class pcGmoKikan extends gcGmo{
 	//
 	// POST
 	//
-	// $hParamList		:POST‚³‚ê‚½“à—e
-	//								+fGetBillInfo‚©‚çæ“¾‚µ‚½¿‹‚ÉŠÖ‚·‚éî•ñ
+	// $hParamList		:POSTã•ã‚ŒãŸå†…å®¹
+	//								+fGetBillInfoã‹ã‚‰å–å¾—ã—ãŸè«‹æ±‚ã«é–¢ã™ã‚‹æƒ…å ±
 	//
 	//-------------------------------------------------
 	function fSendGmoPostData($hParamList){
 		
-		//ƒGƒ‰[
+		//ã‚¨ãƒ©ãƒ¼
 		global $ghGMOCARDERR;
 		
 		unset($hPost);
-		//POST‚µ‚½‚¢“à—e
+		//POSTã—ãŸã„å†…å®¹
 		switch($hParamList['gmopay_url']){
 			/* -------------------------------------------------- */
 			//
-			// æˆø“o˜^
+			// å–å¼•ç™»éŒ²
 			//
 			/* -------------------------------------------------- */
 			//---------------
-			//ƒNƒŒƒWƒbƒgƒJ[ƒh
+			//ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰
 			//---------------
 			case GS_GMOPAY_ENTRYTRAIN:
 				//SHOPID
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//ƒI[ƒ_[ID
+				//ã‚ªãƒ¼ãƒ€ãƒ¼ID
 				$hPost['OrderID'] = $hParamList['order_id'];
-				//ˆ—‹æ•ª
-				//CHECK:—LŒø«ƒ`ƒFƒbƒN CAPTURE:‘¦”„ã AUTH:‰¼”„ã SAUTH:ŠÈˆÕƒI[ƒ\ƒŠ
+				//å‡¦ç†åŒºåˆ†
+				//CHECK:æœ‰åŠ¹æ€§ãƒã‚§ãƒƒã‚¯ CAPTURE:å³æ™‚å£²ä¸Š AUTH:ä»®å£²ä¸Š SAUTH:ç°¡æ˜“ã‚ªãƒ¼ã‚½ãƒª
 				$hPost['JobCd'] = 'AUTH';
-				//—˜—p‹àŠz
+				//åˆ©ç”¨é‡‘é¡
 				$hPost['Amount'] = $hParamList['total_charge'] - $hParamList['payment_charge'];
-				//Å‘——¿
+				//ç¨é€æ–™
 				$hPost['Tax'] = '0';
-				//¤•iƒR[ƒh
+				//å•†å“ã‚³ãƒ¼ãƒ‰
 				$hPost['ItemCode'] = '';
-				//–{l³”FƒT[ƒrƒX—˜—pƒtƒ‰ƒO
+				//æœ¬äººæ‰¿èªã‚µãƒ¼ãƒ“ã‚¹åˆ©ç”¨ãƒ•ãƒ©ã‚°
 				$hPost['TdFlag'] = '0';
-				//3DƒZƒLƒ…ƒA•\¦“X•Ü–¼
+				//3Dã‚»ã‚­ãƒ¥ã‚¢è¡¨ç¤ºåº—èˆ—å
 				$hPost['TdTenantName'] = '';
 				$hPost['graphic'] = 0;
 				break;
 				
 			//---------------
-			//ƒLƒƒƒŠƒAŒˆÏ
+			//ã‚­ãƒ£ãƒªã‚¢æ±ºæ¸ˆ
 			//---------------
 			case GS_GMOPAY_ENTRYTRAINSB:
 			case GS_GMOPAY_ENTRYTRAINAU:
@@ -294,49 +294,49 @@ class pcGmoKikan extends gcGmo{
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//ƒI[ƒ_[ID
+				//ã‚ªãƒ¼ãƒ€ãƒ¼ID
 				$hPost['OrderID'] = $hParamList['order_id'];
-				//ˆ—‹æ•ª
-				//CAPTURE:‘¦”„ã AUTH:‰¼”„ã
+				//å‡¦ç†åŒºåˆ†
+				//CAPTURE:å³æ™‚å£²ä¸Š AUTH:ä»®å£²ä¸Š
 				$hPost['JobCd'] = 'AUTH';
-				//—˜—p‹àŠz
+				//åˆ©ç”¨é‡‘é¡
 				$hPost['Amount'] = $hParamList['total_charge'] - $hParamList['payment_charge'];
-				//Å‘——¿
+				//ç¨é€æ–™
 				$hPost['Tax'] = '0';
 				$hPost['graphic'] = 0;
 				break;
 				
 			/* -------------------------------------------------- */
 			//
-			// ŒˆÏÀs
+			// æ±ºæ¸ˆå®Ÿè¡Œ
 			//
 			/* -------------------------------------------------- */
 			//---------------
-			//ƒNƒŒƒWƒbƒgƒJ[ƒh
+			//ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰
 			//---------------
 			case GS_GMOPAY_EXECTRAIN:
 				/*------------------------------------------------*/
-				//x•¥•û–@ Method
-				//1:ˆêŠ‡ 2:•ªŠ„ 3:ƒ{[ƒiƒXˆêŠ‡ 4:ƒ{[ƒiƒX•ªŠ„ 5:ƒŠƒ{
+				//æ”¯æ‰•æ–¹æ³• Method
+				//1:ä¸€æ‹¬ 2:åˆ†å‰² 3:ãƒœãƒ¼ãƒŠã‚¹ä¸€æ‹¬ 4:ãƒœãƒ¼ãƒŠã‚¹åˆ†å‰² 5:ãƒªãƒœ
 				//
-				//x•¥‰ñ” PayTimes
+				//æ”¯æ‰•å›æ•° PayTimes
 				/*------------------------------------------------*/
 				if($hParamList['PayType']!=""){
 					$hParamList['PayTimes'] = "";
 					switch($hParamList['PayType']){
-						//—‚ŒˆêŠ‡
+						//ç¿Œæœˆä¸€æ‹¬
 						case "01":
 							$hParamList['Method'] = "1";
 							break;
-						//ƒ{[ƒiƒXˆê‰ñ(12/16` 6/10A7/16`11/10)
+						//ãƒœãƒ¼ãƒŠã‚¹ä¸€å›(12/16ï½ 6/10ã€7/16ï½11/10)
 						case "80":
 							$hParamList['Method'] = "3";
 							break;
-						//ƒŠƒ{ƒ‹ƒrƒ“ƒO
+						//ãƒªãƒœãƒ«ãƒ“ãƒ³ã‚°
 						case "88":
 							$hParamList['Method'] = "5";
 							break;
-						//•ªŠ„(2,3,6,10,15,20)
+						//åˆ†å‰²(2,3,6,10,15,20)
 						case "02":
 						case "03":
 						case "06":
@@ -351,25 +351,25 @@ class pcGmoKikan extends gcGmo{
 					}
 				}
 				
-				//æˆøID
+				//å–å¼•ID
 				$hPost['AccessID'] = $hParamList['accessid'];
-				//æˆøPass
+				//å–å¼•Pass
 				$hPost['AccessPass'] = $hParamList['accesspass'];
-				//ƒI[ƒ_[ID
+				//ã‚ªãƒ¼ãƒ€ãƒ¼ID
 				$hPost['OrderID'] = $hParamList['order_id'];
-				//x•¥•û–@
+				//æ”¯æ‰•æ–¹æ³•
 				$hPost['Method'] = $hParamList['Method'];
-				//x•¥‰ñ”
+				//æ”¯æ‰•å›æ•°
 				$hPost['PayTimes'] = $hParamList['PayTimes'];
-				//ƒJ[ƒh”Ô†
+				//ã‚«ãƒ¼ãƒ‰ç•ªå·
 				$hPost['CardNo'] = $hParamList['CardNo'];
-				//—LŒøŠúŒÀ
+				//æœ‰åŠ¹æœŸé™
 				$hPost['Expire'] = $hParamList['CardExp2'].$hParamList['CardExp1'];
-				//ƒZƒLƒ…ƒŠƒeƒBƒR[ƒh
+				//ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚³ãƒ¼ãƒ‰
 				$hPost['SecurityCode'] = $hParamList['SecCd'];
-				//ˆÃØ”Ô†
+				//æš—è¨¼ç•ªå·
 				$hPost['PIN'] = "";
-				//©—R€–Ú bill_id
+				//è‡ªç”±é …ç›® bill_id
 				$hPost['ClientField1'] = $hParamList['bill_id'];
 				$hPost['ClientField2'] = $hParamList['bill_branch'];
 				$hPost['ClientField3'] = $hParamList['bill_branch_sub'];
@@ -377,7 +377,7 @@ class pcGmoKikan extends gcGmo{
 				break;
 				
 			//---------------
-			//ƒLƒƒƒŠƒAŒˆÏ
+			//ã‚­ãƒ£ãƒªã‚¢æ±ºæ¸ˆ
 			//---------------
 			case GS_GMOPAY_EXECTRAINSB:
 			case GS_GMOPAY_EXECTRAINAU:
@@ -388,33 +388,33 @@ class pcGmoKikan extends gcGmo{
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//æˆøID
+				//å–å¼•ID
 				$hPost['AccessID'] = $hParamList['accessid'];
-				//æˆøPass
+				//å–å¼•Pass
 				$hPost['AccessPass'] = $hParamList['accesspass'];
-				//ƒI[ƒ_[ID
+				//ã‚ªãƒ¼ãƒ€ãƒ¼ID
 				$hPost['OrderID'] = $hParamList['order_id'];
-				//©—R€–Ú bill_id
+				//è‡ªç”±é …ç›® bill_id
 				$hPost['ClientField1'] = $hParamList['bill_id'];
 				$hPost['ClientField2'] = $hParamList['bill_branch'];
 				$hPost['ClientField3'] = $hParamList['bill_branch_sub'];
-				//ŒˆÏŒ‹‰Ê–ß‚µURL
+				//æ±ºæ¸ˆçµæœæˆ»ã—URL
 				$hPost['RetURL'] = GS_GMOPAY_RETURL;
-				//x•¥ŠJnŠúŒÀ•b
+				//æ”¯æ‰•é–‹å§‹æœŸé™ç§’
 				$hPost['PaymentTermSec'] = GI_GMOPAY_TERMSEC;
-				//au‚Ì‚Æ‚«‚Ì‚İ
+				//auã®ã¨ãã®ã¿
 				if($hParamList['gmopay_url'] == GS_GMOPAY_EXECTRAINAU){
-					//“E—v
+					//æ‘˜è¦
 					$hPost['Commodity'] = $hParamList['commodity'];
-					//•\¦ƒT[ƒrƒX–¼
+					//è¡¨ç¤ºã‚µãƒ¼ãƒ“ã‚¹å
 					$hPost['ServiceName'] = GS_GMOPAY_SERVICENAME;
-					//•\¦“d˜b”Ô†
+					//è¡¨ç¤ºé›»è©±ç•ªå·
 					$hPost['ServiceTel'] = GS_GMOPAY_SERVICETEL;
-				//docomo‚Ì‚Æ‚«‚Ì‚İ
+				//docomoã®ã¨ãã®ã¿
   				}elseif($hParamList['gmopay_url'] == GS_GMOPAY_EXECTRAINDOCOMO){
-					//ƒhƒRƒ‚•\¦€–Ú1
+					//ãƒ‰ã‚³ãƒ¢è¡¨ç¤ºé …ç›®1
 					$hPost['DocomoDisp1'] = $hParamList['docomodisp1'];
-					//ƒhƒRƒ‚•\¦€–Ú2
+					//ãƒ‰ã‚³ãƒ¢è¡¨ç¤ºé …ç›®2
 					$hPost['DocomoDisp2'] = $hParamList['docomodisp2'];
 				}
 				$hPost['graphic'] = 0;
@@ -423,42 +423,42 @@ class pcGmoKikan extends gcGmo{
 
 			/* -------------------------------------------------- */
 			//
-			// ŒˆÏ•ÏX
+			// æ±ºæ¸ˆå¤‰æ›´
 			//
 			/* -------------------------------------------------- */
 			//---------------
-			//ƒNƒŒƒWƒbƒgƒJ[ƒh
-			//æÁEÄƒI[ƒ\ƒŠEÀ”„ã
+			//ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰
+			//å–æ¶ˆãƒ»å†ã‚ªãƒ¼ã‚½ãƒªãƒ»å®Ÿå£²ä¸Š
 			//---------------
 			case GS_GMOPAY_ALTERTRAN:
 				//SHOPID
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//æˆøID
+				//å–å¼•ID
 				$hPost['AccessID'] = $hParamList['accessid'];
-				//æˆøPass
+				//å–å¼•Pass
 				$hPost['AccessPass'] = $hParamList['accesspass'];
-				//ˆ—‹æ•ª
+				//å‡¦ç†åŒºåˆ†
 				/*-----------------------------------
-					VOID:æÁ RETURN:•Ô•i RETURNX:ŒŒ×‚è•Ô•i
-					CAPTURE:‘¦”„ã AUTH:‰¼”„ã
-					SALES:À”„ã
+					VOID:å–æ¶ˆ RETURN:è¿”å“ RETURNX:æœˆè·¨ã‚Šè¿”å“
+					CAPTURE:å³æ™‚å£²ä¸Š AUTH:ä»®å£²ä¸Š
+					SALES:å®Ÿå£²ä¸Š
 				-----------------------------------*/
 				$hPost['JobCd'] = $hParamList['JobCd'];
-				//ÄƒI[ƒ\ƒŠ‚Ìê‡
+				//å†ã‚ªãƒ¼ã‚½ãƒªã®å ´åˆ
 				if($hPost['JobCd'] == "CAPTURE" || $hPost['JobCd'] == "AUTH"){
-					//—˜—p‹àŠz
+					//åˆ©ç”¨é‡‘é¡
 					$hPost['Amount'] = $hParamList['total_charge'] - $hParamList['payment_charge'];
-					//Å‘——¿
+					//ç¨é€æ–™
 					$hPost['Tax'] = "0";
-					//x•¥•û–@
+					//æ”¯æ‰•æ–¹æ³•
 					$hPost['Method'] = $hParamList['Method'];
-					//x•¥•û–@
+					//æ”¯æ‰•æ–¹æ³•
 					$hPost['PayTimes'] = $hParamList['PayTimes'];
-				//”„ãŒvã‚Ìê‡
+				//å£²ä¸Šè¨ˆä¸Šã®å ´åˆ
 				}elseif($hPost['JobCd'] == "SALES"){
-					//—˜—p‹àŠz
+					//åˆ©ç”¨é‡‘é¡
 					$hPost['Amount'] = $hParamList['Amount'];
 				}
 				$hPost['graphic'] = 0;
@@ -467,11 +467,11 @@ class pcGmoKikan extends gcGmo{
 
 			/* -------------------------------------------------- */
 			//
-			// ŒˆÏƒLƒƒƒ“ƒZƒ‹
+			// æ±ºæ¸ˆã‚­ãƒ£ãƒ³ã‚»ãƒ«
 			//
 			/* -------------------------------------------------- */
 			//---------------
-			//ƒLƒƒƒŠƒAŒˆÏ
+			//ã‚­ãƒ£ãƒªã‚¢æ±ºæ¸ˆ
 			//---------------
 			case GS_GMOPAY_SBCANCEL:
 			case GS_GMOPAY_AUCANCEL:
@@ -482,52 +482,52 @@ class pcGmoKikan extends gcGmo{
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//æˆøID
+				//å–å¼•ID
 				$hPost['AccessID'] = $hParamList['accessid'];
-				//æˆøPass
+				//å–å¼•Pass
 				$hPost['AccessPass'] = $hParamList['accesspass'];
-				//ƒI[ƒ_[ID
+				//ã‚ªãƒ¼ãƒ€ãƒ¼ID
 				$hPost['OrderID'] = $hParamList['order_id'];
-				//ƒLƒƒƒ“ƒZƒ‹‹àŠz
+				//ã‚­ãƒ£ãƒ³ã‚»ãƒ«é‡‘é¡
 				$hPost['CancelAmount'] = $hParamList['Amount'];
-				//ƒLƒƒƒ“ƒZƒ‹Å‘——¿
+				//ã‚­ãƒ£ãƒ³ã‚»ãƒ«ç¨é€æ–™
 				$hPost['CancelTax'] = "0";
 				$hPost['graphic'] = 0;
 				break;
 
 			/* -------------------------------------------------- */
 			//
-			// ‹àŠz•ÏX
+			// é‡‘é¡å¤‰æ›´
 			//
 			/* -------------------------------------------------- */
 			//---------------
-			//ƒNƒŒƒWƒbƒgƒJ[ƒh
+			//ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰
 			//---------------
 			case GS_GMOPAY_CHANGETRAN:
 				//SHOPID
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//æˆøID
+				//å–å¼•ID
 				$hPost['AccessID'] = $hParamList['accessid'];
-				//æˆøPass
+				//å–å¼•Pass
 				$hPost['AccessPass'] = $hParamList['accesspass'];
-				//ˆ—‹æ•ª
+				//å‡¦ç†åŒºåˆ†
 				$hPost['JobCd'] = 'AUTH';
-				//—˜—p‹àŠz
+				//åˆ©ç”¨é‡‘é¡
 				$hPost['Amount'] = $hParamList['Amount'];
-				//Å‘——¿
+				//ç¨é€æ–™
 				$hPost['Tax'] = "0";
 				$hPost['graphic'] = 0;
 				break;
 
 			/* -------------------------------------------------- */
 			//
-			// À”„ã
+			// å®Ÿå£²ä¸Š
 			//
 			/* -------------------------------------------------- */
 			//---------------
-			//ƒLƒƒƒŠƒAŒˆÏ
+			//ã‚­ãƒ£ãƒªã‚¢æ±ºæ¸ˆ
 			//---------------
 			case GS_GMOPAY_SBSALES:
 			case GS_GMOPAY_AUSALES:
@@ -538,15 +538,15 @@ class pcGmoKikan extends gcGmo{
 				$hPost['ShopID'] = GS_GMOPAY_SHOPID;
 				//SHOPPASS
 				$hPost['ShopPass'] = GS_GMOPAY_SHOPPASS;
-				//æˆøID
+				//å–å¼•ID
 				$hPost['AccessID'] = $hParamList['accessid'];
-				//æˆøPass
+				//å–å¼•Pass
 				$hPost['AccessPass'] = $hParamList['accesspass'];
-				//ƒI[ƒ_[ID
+				//ã‚ªãƒ¼ãƒ€ãƒ¼ID
 				$hPost['OrderID'] = $hParamList['order_id'];
-				//—˜—p‹àŠz
+				//åˆ©ç”¨é‡‘é¡
 				$hPost['Amount'] = $hParamList['Amount'];
-				//Å‘——¿
+				//ç¨é€æ–™
 				$hPost['Tax'] = '0';
 				$hPost['graphic'] = 0;
 				break;
@@ -558,17 +558,17 @@ class pcGmoKikan extends gcGmo{
 		$aTmp = array();
 		foreach($hPost as $k => $v){
 			$aTmp[] = $k."=".$this->poGDB->fEscStr($v);
-			//ƒZƒbƒVƒ‡ƒ“‚É“ü‚ê‚é
+			//ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«å…¥ã‚Œã‚‹
 			if($_SESSION['payment_gmo'][$k] == "") $_SESSION['payment_gmo'][$k] = $v;
 		}
 		$sPostTxt = implode("&",$aTmp);
 		
-		//‘—MƒRƒ}ƒ“ƒh
+		//é€ä¿¡ã‚³ãƒãƒ³ãƒ‰
 		$sCmd = "echo '{$sPostTxt}' | POST {$sSendGmoUrl}\n";
-		//‘—M
+		//é€ä¿¡
 		$sRes = `{$sCmd}`;
 		
-		//ƒGƒ‰[ƒR[ƒhæ“¾
+		//ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å–å¾—
 		$hErr = explode("&", $sRes);
 		if(strstr($hErr['0'], 'ErrCode') && strstr($hErr['1'], 'ErrInfo')){
 			$hErr['code'] = str_replace("ErrCode=", "", $hErr['0']);
@@ -583,30 +583,30 @@ class pcGmoKikan extends gcGmo{
 			}
 			$hParamList['err_txt'] = rtrim($hParamList['err_txt'], "|");
 			
-			//“o˜^
+			//ç™»éŒ²
 			//----------------------------------------------------
-			//ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“ƒXƒ^[ƒg
+			//ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚¹ã‚¿ãƒ¼ãƒˆ
 			$this->poGDB-> fBegin();
 			
 			$hParamList['err_code'] = $hErr['code'];
 			$hParamList['err_info'] = $hErr['info'];
-			//tranid‚Æaccessid‚ª‚È‚¢‚Ì‚Å–³—‚â‚èì‚é
+			//tranidã¨accessidãŒãªã„ã®ã§ç„¡ç†ã‚„ã‚Šä½œã‚‹
 			$hParamList['tranid'] = $hParamList['bill_id'].date('YmdHis');
 			$hParamList['accessid'] = $hParamList['bill_id'].date('YmdHis');
 			$hParamList['gmopay_url'] = GS_GMOPAY_ERROR;
 			$hParamList['effect_flg'] = "false";
 			$_SESSION['payment_gmo']['JobCd'] = "ERROR";
 			
-			//ƒGƒ‰[ƒR[ƒh“o˜^
+			//ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ç™»éŒ²
 			$pbRet = $this->fInsertGmoSlnKessai($hParamList);
 			if(!$pbRet){
-				$this->sErrMes = "fInsertGmoSlnKessaiƒNƒGƒŠƒGƒ‰[ ƒGƒ‰[ƒR[ƒh“o˜^";
+				$this->sErrMes = "fInsertGmoSlnKessaiã‚¯ã‚¨ãƒªã‚¨ãƒ©ãƒ¼ ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ç™»éŒ²";
 				gfDebugLog($this->sErrMes);
-				//ƒ[ƒ‹ƒoƒbƒN
+				//ãƒ­ãƒ¼ãƒ«ãƒãƒƒã‚¯
 				$this->poGDB->fRollBack();
 				return false;
 			}else{
-				//ƒRƒ~ƒbƒg
+				//ã‚³ãƒŸãƒƒãƒˆ
 				$this->poGDB-> fCommit();
 			}
 			//----------------------------------------------------
@@ -620,22 +620,22 @@ class pcGmoKikan extends gcGmo{
 
 	//-------------------------------------------------
 	//
-	// ƒe[ƒuƒ‹‚Ö“o˜^
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ç™»éŒ²
 	//
 	// $hParamList				:$_REQUEST
-	//										+fGetBillInfo‚©‚çæ“¾‚µ‚½¿‹‚ÉŠÖ‚·‚éî•ñ
-	// $sExecTrain	:GMO‚©‚ç‚Ì•Ô‚è’l
+	//										+fGetBillInfoã‹ã‚‰å–å¾—ã—ãŸè«‹æ±‚ã«é–¢ã™ã‚‹æƒ…å ±
+	// $sExecTrain	:GMOã‹ã‚‰ã®è¿”ã‚Šå€¤
 	//
 	//-------------------------------------------------
 	function fInsertGmoSlnKessai($hParamList,$sExecTrain=""){
 		
-		//GMO‚©‚ç‚Ì•Ô‚è’l‚ğ•ª‰ğ
+		//GMOã‹ã‚‰ã®è¿”ã‚Šå€¤ã‚’åˆ†è§£
 		if($sExecTrain!=""){
 			$hExecTrain = explode("&", $sExecTrain);
 			$hGmoReturn = array();
 			foreach($hExecTrain as $k1 => $v1){
 				$hGmoR = explode("=", $v1);
-				//¬•¶š‚É‚·‚é
+				//å°æ–‡å­—ã«ã™ã‚‹
 				$sStrK1 = "";
 				$sStrV1 = "";
 				$sStrK1 = strtolower($hGmoR['0']);
@@ -645,7 +645,7 @@ class pcGmoKikan extends gcGmo{
 			}
 		}
 		
-		//—LŒøE–³Œøƒtƒ‰ƒO‚ğC³
+		//æœ‰åŠ¹ãƒ»ç„¡åŠ¹ãƒ•ãƒ©ã‚°ã‚’ä¿®æ­£
 		if(
 			$hParamList['gmopay_url'] == GS_GMOPAY_ALTERTRAN
 			|| $hParamList['gmopay_url'] == GS_GMOPAY_CHANGETRAN
@@ -669,18 +669,18 @@ class pcGmoKikan extends gcGmo{
 			$sSql.= ";";
 			$pbRet = $this->poGDB->fExecSql($sSql);
 			if(!$pbRet){
-				$this->sErrMes = "fInsertGmoSlnKessaiƒNƒGƒŠƒGƒ‰[".$sSql;
+				$this->sErrMes = "fInsertGmoSlnKessaiã‚¯ã‚¨ãƒªã‚¨ãƒ©ãƒ¼".$sSql;
 				$this->poGDB->fErrProcess($this->sErrMes);
 				return false;
 			}
 		}
 		
-		//bill_branch_sub‚ğæ“¾
+		//bill_branch_subã‚’å–å¾—
 		$sSql = "";
 		$sSql.= "SELECT MAX(bill_branch_sub) FROM table_a WHERE bill_id = ".$hParamList['bill_id'];
 		$pbRet=$this->poGDB->fExecSql($sSql);
 		if(!$pbRet){
-			$this->sErrMes = "fSendGmoPostData ƒGƒ‰[ƒR[ƒhæ“¾ ƒf[ƒ^æ“¾¸”s:".$sSql;
+			$this->sErrMes = "fSendGmoPostData ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å–å¾— ãƒ‡ãƒ¼ã‚¿å–å¾—å¤±æ•—:".$sSql;
 			$this->poGDB->fErrProcess($this->sErrMes);
 			return false;
 		}
@@ -711,7 +711,7 @@ class pcGmoKikan extends gcGmo{
 		$sSql = implode(" ",$aSql);
 		$pbRet = $this->poGDB->fExecSql($sSql);
 		if(!$pbRet){
-			$this->sErrMes = "fInsertGmoSlnKessaiƒNƒGƒŠƒGƒ‰[".$sSql;
+			$this->sErrMes = "fInsertGmoSlnKessaiã‚¯ã‚¨ãƒªã‚¨ãƒ©ãƒ¼".$sSql;
 			$this->poGDB->fErrProcess($this->sErrMes);
 			return false;
 		}
@@ -720,5 +720,5 @@ class pcGmoKikan extends gcGmo{
 	}
 
 
-}//class I’[
+}//class çµ‚ç«¯
 ?>

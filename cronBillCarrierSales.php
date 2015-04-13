@@ -2,19 +2,19 @@
 <?php
 //--------------------------------------------------------------------
 //
-//	ŠO•”API‘—M‚ğƒoƒbƒ`ˆ—‚Ås‚¤ƒvƒƒOƒ‰ƒ€‚Å‚·B
-//	DB‚Ì“à—e‚Í‚¨Œ©‚¹‚Å‚«‚È‚¢‚Ì‚ÅA‚»‚±‚Í’Ç‰ÁC³‚µ‚Ä‚ ‚è‚Ü‚·B
+//	å¤–éƒ¨APIé€ä¿¡ã‚’ãƒãƒƒãƒå‡¦ç†ã§è¡Œã†ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ã€‚
+//	DBã®å†…å®¹ã¯ãŠè¦‹ã›ã§ããªã„ã®ã§ã€ãã“ã¯è¿½åŠ ä¿®æ­£ã—ã¦ã‚ã‚Šã¾ã™ã€‚
 //
 //--------------------------------------------------------------------
-	//‹¤’ÊŠÖ”
+	//å…±é€šé–¢æ•°
 	require_once('mod_common.php');
 	require_once('mod_log.php');
 
-	//GMO‹¤’ÊŠÖ”
+	//GMOå…±é€šé–¢æ•°
 	require_once('mod_cf_gmo_kikan.php');
 
 
-	//DBÚ‘±ƒIƒuƒWƒFƒNƒg
+	//DBæ¥ç¶šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	$poGDB=new gcConnectDB();
 
 	//GMO
@@ -22,13 +22,13 @@
 
 	
 #**********************************************************
-# ƒoƒbƒ`ˆ—ŠJn
+# ãƒãƒƒãƒå‡¦ç†é–‹å§‹
 #**********************************************************
 if($argv[1]==1){
 	
-	$sLogText = "y”„ãŒvãz";
+	$sLogText = "ã€å£²ä¸Šè¨ˆä¸Šã€‘";
 	
-	//ˆê“ú‘O‚Ì“ú•t‚ğæ“¾
+	//ä¸€æ—¥å‰ã®æ—¥ä»˜ã‚’å–å¾—
 	$sYesterDay = "";
 	$sYesterDay = date("Y-m-d",strtotime("-1 day"));
 	$hYesterDay = explode("-",$sYesterDay);
@@ -38,36 +38,36 @@ if($argv[1]==1){
 	$hList['iSalesMonth'] = $hYesterDay[1];
 	$hList['iSalesDay'] = $hYesterDay[2];
 	
-	//”„ãŒvã‹æ•ª
+	//å£²ä¸Šè¨ˆä¸ŠåŒºåˆ†
 	$hList['psTranKbn'] = "CAPTURE";
 	
-	//x•¥•û–@w’è
+	//æ”¯æ‰•æ–¹æ³•æŒ‡å®š
 	$hList['payment_way'] = GS_PAYMENTWAY_CARRIER;
 
-	//”„ãŒvã‚·‚é‘ÎÛƒŒƒR[ƒhæ“¾
+	//å£²ä¸Šè¨ˆä¸Šã™ã‚‹å¯¾è±¡ãƒ¬ã‚³ãƒ¼ãƒ‰å–å¾—
 	$hSales =	$pcGmoKikan->fGetGmoSalesList($hList);
 	
 	$hParamList = array();
-	//ˆê‚Â‚¸‚Âˆ—
+	//ä¸€ã¤ãšã¤å‡¦ç†
 	foreach($hSales as $k1 => $v1){
 		$hParamList = $v1;
 		$hParamList['Amount'] = $v1['amount'];
 		$hParamList['idpass'] = "sales";
 		$hParamList['JobCd'] = 'SALES';
-		//ÀsURLæ“¾
+		//å®Ÿè¡ŒURLå–å¾—
 		$hParamList['gmopay_url'] = $pcGmoKikan->fGetGmoEcMobilePayurl($hParamList);
 		
 		
-		gfDebugLog($sLogText."ˆ—‘O:bill_id:".$hParamList['bill_id']);
+		gfDebugLog($sLogText."å‡¦ç†å‰:bill_id:".$hParamList['bill_id']);
 		//--------------------
-		//”„ãŒvãÀs
+		//å£²ä¸Šè¨ˆä¸Šå®Ÿè¡Œ
 		//--------------------
 		$pbRet = $pcGmoKikan->fUpdateGmoSalesList($hParamList);
 		if(!$pbRet){
-			gfDebugLog($sLogText."¸”s:bill_id:".$hParamList['bill_id']);
+			gfDebugLog($sLogText."å¤±æ•—:bill_id:".$hParamList['bill_id']);
 			return false;
 		}else{
-			gfDebugLog($sLogText."¬Œ÷:bill_id:".$hParamList['bill_id']);
+			gfDebugLog($sLogText."æˆåŠŸ:bill_id:".$hParamList['bill_id']);
 		}
 	}
 	
